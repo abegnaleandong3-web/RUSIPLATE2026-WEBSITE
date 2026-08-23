@@ -253,7 +253,7 @@ async function deletePlate(id){
 }
 async function changeStatus(id){
  const p=plates.find(x=>x.id===id); if(!p)return;
- const next=p.status==="Available"?"Claimed":p.status==="Claimed"?"Reserved":"Available";
+ const next=p.status==="Available"?"Claimed":p.status==="RECEIVED"?"Reserved":"Available";
  const {error}=await db.from("plates").update({status:next}).eq("id",id);
  if(error)return alert(error.message);
  await loadData();
