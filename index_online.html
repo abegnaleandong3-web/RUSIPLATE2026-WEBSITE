@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RUSI Plate Management System</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f1f5f9;color:#172033}
+header{background:#111827;color:#facc15;padding:18px 25px;display:flex;justify-content:space-between;align-items:center}
+header h1{margin:0;font-size:22px}
+.container{display:flex;min-height:calc(100vh - 70px)}
+.sidebar{width:240px;background:#1e293b;color:white;padding:15px}
+.sidebar button{width:100%;border:0;background:transparent;color:white;padding:13px;text-align:left;cursor:pointer;border-radius:7px;margin-bottom:5px;font-size:15px}
+.sidebar button:hover,.sidebar button.active{background:#334155}
+main{flex:1;padding:25px;overflow:auto}
+.page{display:none}.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px;margin-bottom:25px}
+.card,.panel{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 8px #0001}
+.card h3{margin:0 0 10px;color:#64748b}.number{font-size:30px;font-weight:bold}
+.panel{margin-bottom:20px}
+input,select{padding:11px;border:1px solid #cbd5e1;border-radius:7px;width:100%;margin:5px 0}
+button.primary{background:#2563eb;color:white;border:0;padding:11px 18px;border-radius:7px;cursor:pointer}
+button.success{background:#16a34a;color:white;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+button.danger{background:#dc2626;color:white;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+button.secondary{background:#475569;color:white;border:0;padding:10px 15px;border-radius:7px;cursor:pointer}
+table{width:100%;border-collapse:collapse;min-width:850px}
+th,td{padding:11px;border-bottom:1px solid #e2e8f0;text-align:left}
+th{background:#f8fafc}.table-wrap{overflow:auto}
+.status{padding:5px 9px;border-radius:20px;font-size:12px;font-weight:bold}
+.available{background:#dcfce7;color:#166534}.claimed{background:#fee2e2;color:#991b1b}.reserved{background:#fef3c7;color:#92400e}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:10}
+.modal.show{display:flex}.modal-box{background:white;width:min(600px,95%);max-height:90vh;overflow:auto;padding:25px;border-radius:12px}
+.search{max-width:450px;margin-bottom:15px}
+.notice{background:#fef3c7;padding:12px;border-radius:8px;margin-bottom:15px}
+@media(max-width:700px){.sidebar{width:65px}.sidebar button span{display:none}.sidebar button{text-align:center}main{padding:12px}}
+</style>
+</head>
+<body>
+<header><h1>🚘 RUSI PLATE MANAGEMENT SYSTEM</h1><div id="clock"></div></header>
+<div class="container">
+<aside class="sidebar">
+<button class="active" onclick="showPage('home',this)">🏠 <span>Home</span></button>
+<button onclick="showPage('plates',this)">🔢 <span>All Plate List</span></button>
+<button onclick="showPage('claimed',this)">✅ <span>Claimed Plates</span></button>
+<button onclick="showPage('available',this)">📦 <span>Available Plates</span></button>
+<button onclick="showPage('branches',this)">🏢 <span>Other Branch</span></button>
+<button onclick="showPage('import',this)">📥 <span>Import / Export</span></button>
+</aside>
+
+<main>
+<section id="home" class="page active">
+<h2>Dashboard</h2>
+<div class="notice"><b>ONLINE DATABASE:</b> Ang records ay sine-save sa Supabase. Ilagay muna ang iyong Project URL at Publishable Key sa code sa ibaba bago gamitin.</div>
+<div class="cards">
+<div class="card"><h3>Total Plates</h3><div class="number" id="totalPlates">0</div></div>
+<div class="card"><h3>Available</h3><div class="number" id="availableCount">0</div></div>
+<div class="card"><h3>Claimed</h3><div class="number" id="claimedCount">0</div></div>
+<div class="card"><h3>Branches</h3><div class="number" id="branchCount">0</div></div>
+</div>
+<div class="panel">
+<h3>Quick Add Plate</h3>
+<div class="form-grid">
+<input id="quickPlate" placeholder="Plate Number">
+<input id="quickOwner" placeholder="Owner / Customer">
+<select id="quickBranch"><option>Main Branch</option><option>Other Branch</option></select>
+<select id="quickStatus"><option>Available</option><option>Claimed</option><option>Reserved</option></select>
+</div><br>
+<button class="primary" onclick="addQuickPlate()">➕ Add Plate</button>
+</div>
+</section>
+
+<section id="plates" class="page">
+<h2>All Plate List</h2><div class="panel">
+<input class="search" id="plateSearch" placeholder="🔎 Search plate, owner, branch..." oninput="renderPlates()">
+<button class="primary" onclick="openAddModal()">➕ Add New Plate</button><br><br>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>Plate</th><th>Owner</th><th>Branch</th><th>Status</th><th>Date</th><th>Action</th></tr></thead><tbody id="plateTable"></tbody></table></div>
+</div></section>
+
+<section id="claimed" class="page"><h2>Claimed Plates</h2><div class="panel"><div class="table-wrap"><table><thead><tr><th>Plate</th><th>Owner</th><th>Branch</th><th>Date</th></tr></thead><tbody id="claimedTable"></tbody></table></div></div></section>
+
+<section id="available" class="page"><h2>Available Plates</h2><div class="panel"><div class="table-wrap"><table><thead><tr><th>Plate</th><th>Branch</th><th>Status</th><th>Action</th></tr></thead><tbody id="availableTable"></tbody></table></div></div></section>
+
+<section id="branches" class="page">
+<h2>Other Branch</h2><div class="panel">
+<input id="branchName" placeholder="New branch name"><button class="primary" onclick="addBranch()">➕ Add Branch</button><br><br>
+<div id="branchList"></div>
+</div></section>
+
+<section id="import" class="page">
+<h2>Import / Export</h2><div class="panel">
+<h3>Import CSV</h3><p>Format: <code>plate,owner,branch,status</code></p>
+<input type="file" id="csvFile" accept=".csv"><button class="primary" onclick="importCSV()">📥 Import CSV</button>
+<hr><h3>Export</h3><button class="success" onclick="exportCSV()">📤 Export All Plates CSV</button>
+<br><br><button class="secondary" onclick="generateDemo()">⚡ Generate Demo Plates</button>
+<button class="danger" onclick="clearAll()">🗑 Delete All Data</button>
+</div></section>
+</main></div>
+
+<div class="modal" id="addModal"><div class="modal-box">
+<h2>Add Plate</h2>
+<input id="plateNumber" placeholder="Plate Number"><input id="owner" placeholder="Owner / Customer">
+<select id="branch"><option>Main Branch</option><option>RUSI CARMEN Branch</option></select>
+<select id="status"><option>Available</option><option>Claimed</option><option>Reserved</option></select><br><br>
+<button class="primary" onclick="savePlate()">Save Plate</button>
+<button class="secondary" onclick="closeModal()">Cancel</button>
+</div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* =========================================================
+   SUPABASE SETUP
+   PALITAN ANG DALAWANG VALUE SA IBABA.
+   HUWAG ILAGAY ANG service_role/secret key.
+   ========================================================= */
+const SUPABASE_URL = "https://lfcbawmlhyngbytnmetm.supabase.co";
+const SUPABASE_KEY = "sb_publishable_KolO_-pCM806HZbKufuTHg_hxC5F7Vl";
+
+const onlineReady =
+  !SUPABASE_URL.includes("PASTE_") &&
+  !SUPABASE_KEY.includes("PASTE_");
+
+const db = onlineReady ? window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY) : null;
+
+let plates=[];
+let branches=["Main Branch","Other Branch"];
+
+function esc(v){
+ return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+function showPage(page,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(page).classList.add("active");
+ document.querySelectorAll(".sidebar button").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active"); renderAll();
+}
+function updateDashboard(){
+ document.getElementById("totalPlates").innerText=plates.length;
+ document.getElementById("availableCount").innerText=plates.filter(p=>p.status==="Available").length;
+ document.getElementById("claimedCount").innerText=plates.filter(p=>p.status==="Claimed").length;
+ document.getElementById("branchCount").innerText=branches.length;
+}
+function openAddModal(){document.getElementById("addModal").classList.add("show")}
+function closeModal(){document.getElementById("addModal").classList.remove("show")}
+
+async function loadData(){
+ if(!onlineReady){
+   alert("Hindi pa naka-connect ang database. Palitan muna ang SUPABASE_URL at SUPABASE_KEY sa code.");
+   return;
+ }
+ const {data:p,error:pe}=await db.from("plates").select("*").order("id",{ascending:true});
+ if(pe){alert("Database error: "+pe.message);return}
+ const {data:b,error:be}=await db.from("branches").select("*").order("id",{ascending:true});
+ if(be){alert("Branch database error: "+be.message);return}
+ plates=p||[];
+ branches=(b&&b.length)?b.map(x=>x.name):["Main Branch","Other Branch"];
+ renderAll();
+}
+
+async function savePlate(){
+ const plate=document.getElementById("plateNumber").value.trim().toUpperCase();
+ const owner=document.getElementById("owner").value.trim();
+ const branch=document.getElementById("branch").value;
+ const status=document.getElementById("status").value;
+ if(!plate)return alert("Ilagay ang plate number.");
+ if(!onlineReady)return alert("I-connect muna ang Supabase.");
+ if(plates.some(p=>p.plate===plate))return alert("Existing na ang plate number.");
+ const row={plate,owner,branch,status,date:new Date().toLocaleString()};
+ const {error}=await db.from("plates").insert(row);
+ if(error)return alert("Hindi na-save: "+error.message);
+ document.getElementById("plateNumber").value="";
+ document.getElementById("owner").value="";
+ closeModal(); await loadData(); alert("Plate saved online!");
+}
+
+async function addQuickPlate(){
+ const plate=document.getElementById("quickPlate").value.trim().toUpperCase();
+ const owner=document.getElementById("quickOwner").value.trim();
+ const branch=document.getElementById("quickBranch").value;
+ const status=document.getElementById("quickStatus").value;
+ if(!plate)return alert("Ilagay ang plate number.");
+ if(!onlineReady)return alert("I-connect muna ang Supabase.");
+ if(plates.some(p=>p.plate===plate))return alert("Existing na ang plate number.");
+ const {error}=await db.from("plates").insert({plate,owner,branch,status,date:new Date().toLocaleString()});
+ if(error)return alert("Hindi na-save: "+error.message);
+ document.getElementById("quickPlate").value="";
+ document.getElementById("quickOwner").value="";
+ await loadData(); alert("Plate added online!");
+}
+
+async function deletePlate(id){
+ if(!confirm("Delete this plate?"))return;
+ const {error}=await db.from("plates").delete().eq("id",id);
+ if(error)return alert(error.message);
+ await loadData();
+}
+async function changeStatus(id){
+ const p=plates.find(x=>x.id===id); if(!p)return;
+ const next=p.status==="Available"?"Claimed":p.status==="Claimed"?"Reserved":"Available";
+ const {error}=await db.from("plates").update({status:next}).eq("id",id);
+ if(error)return alert(error.message);
+ await loadData();
+}
+function renderPlates(){
+ const s=(document.getElementById("plateSearch")?.value||"").toLowerCase();
+ const data=plates.filter(p=>(p.plate||"").toLowerCase().includes(s)||(p.owner||"").toLowerCase().includes(s)||(p.branch||"").toLowerCase().includes(s));
+ document.getElementById("plateTable").innerHTML=data.map(p=>`
+ <tr><td>${p.id}</td><td><strong>${esc(p.plate)}</strong></td><td>${esc(p.owner)}</td><td>${esc(p.branch)}</td>
+ <td><span class="status ${String(p.status).toLowerCase()}">${esc(p.status)}</span></td><td>${esc(p.date)}</td>
+ <td><button class="success" onclick="changeStatus(${p.id})">Change Status</button>
+ <button class="danger" onclick="deletePlate(${p.id})">Delete</button></td></tr>`).join("");
+}
+function renderClaimed(){
+ document.getElementById("claimedTable").innerHTML=plates.filter(p=>p.status==="Claimed").map(p=>`<tr><td>${esc(p.plate)}</td><td>${esc(p.owner)}</td><td>${esc(p.branch)}</td><td>${esc(p.date)}</td></tr>`).join("");
+}
+function renderAvailable(){
+ document.getElementById("availableTable").innerHTML=plates.filter(p=>p.status==="Available").map(p=>`<tr><td>${esc(p.plate)}</td><td>${esc(p.branch)}</td><td><span class="status available">Available</span></td><td><button class="success" onclick="changeStatus(${p.id})">Claim</button></td></tr>`).join("");
+}
+async function addBranch(){
+ const name=document.getElementById("branchName").value.trim();
+ if(!name)return;
+ if(!onlineReady)return alert("I-connect muna ang Supabase.");
+ if(branches.includes(name))return alert("Existing na ang branch.");
+ const {error}=await db.from("branches").insert({name});
+ if(error)return alert(error.message);
+ document.getElementById("branchName").value=""; await loadData();
+}
+async function deleteBranch(id){
+ if(branches.length<=1)return alert("Kailangan may at least isang branch.");
+ if(!confirm("Delete branch?"))return;
+ const b=branches[id];
+ const row=await db.from("branches").select("id").eq("name",b).maybeSingle();
+ if(row.data){const {error}=await db.from("branches").delete().eq("id",row.data.id);if(error)return alert(error.message);}
+ await loadData();
+}
+function renderBranches(){
+ document.getElementById("branchList").innerHTML=branches.map((b,i)=>`
+ <div class="card" style="display:inline-block;margin:5px">
+ 🏢 ${esc(b)}<br><br><strong>${plates.filter(p=>p.branch===b).length} plates</strong><br><br>
+ <button class="danger" onclick="deleteBranch(${i})">Delete</button></div>`).join("");
+}
+function exportCSV(){
+ let csv="plate,owner,branch,status,date\n";
+ plates.forEach(p=>csv+=`"${p.plate}","${p.owner}","${p.branch}","${p.status}","${p.date}"\n`);
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="plate-list.csv";a.click();
+}
+function parseCSVLine(line){
+ let r=[],c="",q=false;
+ for(let x of line){if(x==='"')q=!q;else if(x===","&&!q){r.push(c);c=""}else c+=x}
+ r.push(c);return r;
+}
+async function importCSV(){
+ const input=document.getElementById("csvFile");
+ if(!input.files.length)return alert("Pumili ng CSV file.");
+ if(!onlineReady)return alert("I-connect muna ang Supabase.");
+ const lines=(await input.files[0].text()).split(/\r?\n/).filter(x=>x.trim());
+ let added=0;
+ for(let i=1;i<lines.length;i++){
+   const row=parseCSVLine(lines[i]); if(!row[0])continue;
+   const plate=row[0].trim().toUpperCase();
+   if(plates.some(p=>p.plate===plate))continue;
+   const {error}=await db.from("plates").insert({plate,owner:row[1]||"",branch:row[2]||"Main Branch",status:row[3]||"Available",date:new Date().toLocaleString()});
+   if(!error)added++;
+ }
+ await loadData();alert(added+" plate records imported.");
+}
+async function generateDemo(){
+ if(!confirm("Generate 100 demo plate records?"))return;
+ if(!onlineReady)return alert("I-connect muna ang Supabase.");
+ const rows=[];
+ for(let i=1;i<=100;i++)rows.push({plate:"DEMO-"+String(i).padStart(6,"0"),owner:"Demo Customer "+i,branch:branches[i%branches.length],status:i%5===0?"Claimed":"Available",date:new Date().toLocaleString()});
+ const {error}=await db.from("plates").upsert(rows,{onConflict:"plate",ignoreDuplicates:true});
+ if(error)return alert(error.message); await loadData();alert("Demo plates generated.");
+}
+async function clearAll(){
+ if(!confirm("WARNING: Delete ALL plate data?"))return;
+ if(!onlineReady)return alert("I-connect muna ang Supabase.");
+ const {error}=await db.from("plates").delete().not("id","is",null);
+ if(error)return alert(error.message); await loadData();
+}
+function renderAll(){updateDashboard();renderPlates();renderClaimed();renderAvailable();renderBranches()}
+function updateClock(){document.getElementById("clock").innerText=new Date().toLocaleString()}
+setInterval(updateClock,1000);updateClock();
+loadData();
+</script>
+</body>
+</html>
