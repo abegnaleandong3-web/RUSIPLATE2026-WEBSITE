@@ -37,7 +37,46 @@ th{background:#f8fafc}.table-wrap{overflow:auto}
 @media(max-width:700px){.sidebar{width:65px}.sidebar button span{display:none}.sidebar button{text-align:center}main{padding:12px}}
 </style>
 </head>
-<body>
+<body><div id="loginScreen" style="
+position:fixed;
+inset:0;
+background:#111827;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+">
+  <div style="
+  background:white;
+  width:min(400px,90%);
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 10px 30px #0005;
+  ">
+    <h2 style="text-align:center;margin-top:0;">🔐 RUSI Plate System</h2>
+    <p style="text-align:center;color:#64748b;">Login to continue</p>
+
+    <input id="loginUsername"
+      type="text"
+      placeholder="Username"
+      style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box">
+
+    <input id="loginPassword"
+      type="password"
+      placeholder="Password"
+      style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box">
+
+    <button onclick="login()"
+      style="width:100%;padding:12px;background:#2563eb;color:white;border:0;border-radius:7px;cursor:pointer">
+      Login
+    </button>
+
+    <p id="loginError"
+      style="color:#dc2626;text-align:center;display:none">
+      Incorrect username or password.
+    </p>
+  </div>
+</div>
 <header><h1>🚘 RUSI PLATE MANAGEMENT SYSTEM</h1><div id="clock"></div></header>
 <div class="container">
 <aside class="sidebar">
@@ -64,8 +103,7 @@ th{background:#f8fafc}.table-wrap{overflow:auto}
 <div class="form-grid">
 <input id="quickPlate" placeholder="Plate Number">
 <input id="quickOwner" placeholder="Owner / Customer">
-<select id="quickBranch"><option>Main Branch</option><option>Other Branch</option></select>
-<select id="quickStatus"><option>Available</option><option>Claimed</option><option>Reserved</option></select>
+<select id="quickBranch"></select><select id="quickStatus"><option>Available</option><option>Claimed</option><option>Reserved</option></select>
 </div><br>
 <button class="primary" onclick="addQuickPlate()">➕ Add Plate</button>
 </div>
@@ -101,14 +139,32 @@ th{background:#f8fafc}.table-wrap{overflow:auto}
 <div class="modal" id="addModal"><div class="modal-box">
 <h2>Add Plate</h2>
 <input id="plateNumber" placeholder="Plate Number"><input id="owner" placeholder="Owner / Customer">
-<select id="branch"><option>Main Branch</option><option>RUSI CARMEN Branch</option></select>
-<select id="status"><option>Available</option><option>Claimed</option><option>Reserved</option></select><br><br>
+<select id="branch"></select><select id="status"><option>Available</option><option>Claimed</option><option>Reserved</option></select><br><br>
 <button class="primary" onclick="savePlate()">Save Plate</button>
 <button class="secondary" onclick="closeModal()">Cancel</button>
 </div></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
+<script>const LOGIN_USERNAME = "RUSIBALINGASAG";
+const LOGIN_PASSWORD = "RUSIBAL2019";
+
+function login(){
+  const username = document.getElementById("loginUsername").value;
+  const password = document.getElementById("loginPassword").value;
+
+  if(username === LOGIN_USERNAME && password === LOGIN_PASSWORD){
+    document.getElementById("loginScreen").style.display = "none";
+    sessionStorage.setItem("rusiLoggedIn","yes");
+  }else{
+    document.getElementById("loginError").style.display = "block";
+  }
+}
+
+window.addEventListener("load",function(){
+  if(sessionStorage.getItem("rusiLoggedIn")==="yes"){
+    document.getElementById("loginScreen").style.display="none";
+  }
+});
 /* =========================================================
    SUPABASE SETUP
    PALITAN ANG DALAWANG VALUE SA IBABA.
@@ -279,7 +335,23 @@ async function clearAll(){
  const {error}=await db.from("plates").delete().not("id","is",null);
  if(error)return alert(error.message); await loadData();
 }
-function renderAll(){updateDashboard();renderPlates();renderClaimed();renderAvailable();renderBranches()}
+function renderAll(){
+  updateDashboard();
+  renderPlates();
+  renderClaimed();
+  renderAvailable();
+  renderBranches();
+  renderBranchDropdowns();
+}
+
+function renderBranchDropdowns(){
+  const options = branches
+    .map(b => `<option value="${esc(b)}">${esc(b)}</option>`)
+    .join("");
+
+  document.getElementById("branch").innerHTML = options;
+  document.getElementById("quickBranch").innerHTML = options;
+}
 function updateClock(){document.getElementById("clock").innerText=new Date().toLocaleString()}
 setInterval(updateClock,1000);updateClock();
 loadData();
