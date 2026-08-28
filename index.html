@@ -6,16 +6,17 @@
 <title>RUSI Plate Management System</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+box-sizing:border-box
+}
 
 body{
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
 color:#172033;
 
-/* PERMANENT BACKGROUND IMAGE */
 background-image:
-linear-gradient(rgba(15,23,42,.72),rgba(15,23,42,.72)),
+linear-gradient(rgba(2,6,23,.55),rgba(2,6,23,.55)),
 url("https://github.com/abegnaleandong3-web/RUSIPLATE2026-WEBSITE/blob/main/background.webp?raw=true");
 background-size:cover;
 background-position:center;
@@ -24,15 +25,20 @@ background-repeat:no-repeat;
 }
 
 header{
-background:rgba(17,24,39,.94);
+background:rgba(15,23,42,.88);
+backdrop-filter:blur(8px);
 color:#facc15;
 padding:18px 25px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+border-bottom:1px solid rgba(255,255,255,.12);
 }
 
-header h1{margin:0;font-size:22px}
+header h1{
+margin:0;
+font-size:22px
+}
 
 .container{
 display:flex;
@@ -41,9 +47,11 @@ min-height:calc(100vh - 70px)
 
 .sidebar{
 width:240px;
-background:rgba(30,41,59,.95);
+background:rgba(15,23,42,.88);
+backdrop-filter:blur(10px);
 color:white;
-padding:15px
+padding:15px;
+border-right:1px solid rgba(255,255,255,.10);
 }
 
 .sidebar button{
@@ -61,19 +69,24 @@ font-size:15px
 
 .sidebar button:hover,
 .sidebar button.active{
-background:#334155
+background:rgba(51,65,85,.90)
 }
 
 main{
 flex:1;
 padding:25px;
 overflow:auto;
-background:rgba(241,245,249,.84);
+background:rgba(15,23,42,.30);
 min-height:calc(100vh - 70px)
 }
 
-.page{display:none}
-.page.active{display:block}
+.page{
+display:none
+}
+
+.page.active{
+display:block
+}
 
 .cards{
 display:grid;
@@ -82,16 +95,19 @@ gap:15px;
 margin-bottom:25px
 }
 
-.card,.panel{
-background:rgba(255,255,255,.96);
+.card,
+.panel{
+background:rgba(255,255,255,.90);
+backdrop-filter:blur(8px);
 border-radius:12px;
 padding:20px;
-box-shadow:0 2px 8px #0001
+box-shadow:0 8px 25px rgba(0,0,0,.20);
+border:1px solid rgba(255,255,255,.35);
 }
 
 .card h3{
 margin:0 0 10px;
-color:#64748b
+color:#475569
 }
 
 .number{
@@ -99,14 +115,30 @@ font-size:30px;
 font-weight:bold
 }
 
-.panel{margin-bottom:20px}
+.panel{
+margin-bottom:20px
+}
 
-input,select{
+input,
+select{
 padding:11px;
-border:1px solid #cbd5e1;
+border:1px solid rgba(148,163,184,.65);
 border-radius:7px;
 width:100%;
-margin:5px 0
+margin:5px 0;
+background:rgba(255,255,255,.94);
+color:#172033;
+outline:none;
+}
+
+input:focus,
+select:focus{
+border-color:#2563eb;
+box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+input::placeholder{
+color:#64748b
 }
 
 button.primary{
@@ -116,6 +148,10 @@ border:0;
 padding:11px 18px;
 border-radius:7px;
 cursor:pointer
+}
+
+button.primary:hover{
+background:#1d4ed8
 }
 
 button.success{
@@ -169,15 +205,20 @@ border-collapse:collapse;
 min-width:1050px
 }
 
-th,td{
+th,
+td{
 padding:11px;
 border-bottom:1px solid #e2e8f0;
 text-align:left
 }
 
-th{background:#f8fafc}
+th{
+background:rgba(248,250,252,.92)
+}
 
-.table-wrap{overflow:auto}
+.table-wrap{
+overflow:auto
+}
 
 .status{
 padding:5px 9px;
@@ -221,21 +262,25 @@ gap:10px
 display:none;
 position:fixed;
 inset:0;
-background:#0008;
+background:rgba(0,0,0,.68);
 align-items:center;
 justify-content:center;
-z-index:10
+z-index:10;
+backdrop-filter:blur(4px);
 }
 
-.modal.show{display:flex}
+.modal.show{
+display:flex
+}
 
 .modal-box{
-background:white;
+background:rgba(255,255,255,.96);
 width:min(600px,95%);
 max-height:90vh;
 overflow:auto;
 padding:25px;
-border-radius:12px
+border-radius:12px;
+box-shadow:0 15px 45px rgba(0,0,0,.35);
 }
 
 .search{
@@ -244,21 +289,114 @@ margin-bottom:15px
 }
 
 .notice{
-background:#fef3c7;
+background:rgba(254,243,199,.94);
 padding:12px;
 border-radius:8px;
 margin-bottom:15px
 }
 
-.received-title{color:#1d4ed8}
-.forwarded-title{color:#6d28d9}
-.edit-title{color:#d97706}
+.received-title{
+color:#1d4ed8
+}
+
+.forwarded-title{
+color:#6d28d9
+}
+
+.edit-title{
+color:#d97706
+}
+
+
+/* =========================
+   LOGIN SCREEN
+   ========================= */
+
+#loginScreen{
+background-image:
+linear-gradient(rgba(2,6,23,.48),rgba(2,6,23,.62)),
+url("https://github.com/abegnaleandong3-web/RUSIPLATE2026-WEBSITE/blob/main/background.webp?raw=true") !important;
+background-size:cover !important;
+background-position:center !important;
+background-repeat:no-repeat !important;
+background-attachment:fixed !important;
+}
+
+#loginScreen > div{
+background:rgba(15,23,42,.78) !important;
+backdrop-filter:blur(14px);
+-webkit-backdrop-filter:blur(14px);
+border:1px solid rgba(255,255,255,.20);
+box-shadow:0 15px 50px rgba(0,0,0,.45) !important;
+color:white;
+}
+
+#loginScreen h2{
+color:#facc15;
+}
+
+#loginScreen p{
+color:#cbd5e1 !important;
+}
+
+#loginUsername,
+#loginPassword{
+background:rgba(255,255,255,.12) !important;
+border:1px solid rgba(255,255,255,.25) !important;
+color:white !important;
+}
+
+#loginUsername::placeholder,
+#loginPassword::placeholder{
+color:#cbd5e1 !important;
+}
+
+#loginUsername:focus,
+#loginPassword:focus{
+background:rgba(255,255,255,.17) !important;
+border-color:#facc15 !important;
+box-shadow:0 0 0 3px rgba(250,204,21,.15) !important;
+}
+
+#loginScreen button{
+background:#2563eb !important;
+box-shadow:0 5px 15px rgba(37,99,235,.35);
+}
+
+#loginScreen button:hover{
+background:#1d4ed8 !important;
+}
+
+#loginError{
+color:#fca5a5 !important;
+}
+
+
+/* MOBILE */
 
 @media(max-width:700px){
-.sidebar{width:65px}
-.sidebar button span{display:none}
-.sidebar button{text-align:center}
-main{padding:12px}
+
+.sidebar{
+width:65px
+}
+
+.sidebar button span{
+display:none
+}
+
+.sidebar button{
+text-align:center
+}
+
+main{
+padding:12px
+}
+
+#loginScreen > div{
+width:92% !important;
+padding:25px !important;
+}
+
 }
 </style>
 </head>
@@ -284,28 +422,34 @@ border-radius:15px;
 box-shadow:0 10px 30px #0005;
 ">
 
-<h2 style="text-align:center;margin-top:0;">🔐 RUSI Plate System</h2>
+<h2 style="text-align:center;margin-top:0;">
+🔐 RUSI Plate System
+</h2>
 
 <p style="text-align:center;color:#64748b;">
 Login to continue
 </p>
 
-<input id="loginUsername"
+<input
+id="loginUsername"
 type="text"
 placeholder="Username"
 style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box">
 
-<input id="loginPassword"
+<input
+id="loginPassword"
 type="password"
 placeholder="Password"
 style="width:100%;padding:12px;margin:8px 0;box-sizing:border-box">
 
-<button onclick="login()"
+<button
+onclick="login()"
 style="width:100%;padding:12px;background:#2563eb;color:white;border:0;border-radius:7px;cursor:pointer">
 Login
 </button>
 
-<p id="loginError"
+<p
+id="loginError"
 style="color:#dc2626;text-align:center;display:none">
 Incorrect username or password.
 </p>
@@ -313,15 +457,25 @@ Incorrect username or password.
 </div>
 </div>
 
+
 <!-- HEADER -->
+
 <header>
-<h1>🚘 RUSI PLATE MANAGEMENT SYSTEM</h1>
+
+<h1>
+🚘 RUSI PLATE MANAGEMENT SYSTEM
+</h1>
+
 <div id="clock"></div>
+
 </header>
+
 
 <div class="container">
 
+
 <!-- SIDEBAR -->
+
 <aside class="sidebar">
 
 <button class="active" onclick="showPage('home',this)">
@@ -358,51 +512,97 @@ Incorrect username or password.
 
 </aside>
 
+
 <main>
 
+
 <!-- HOME -->
+
 <section id="home" class="page active">
 
 <h2>Dashboard</h2>
 
 <div class="notice">
+
 <b>ONLINE DATABASE:</b>
-Ang records ay sine-save sa Supabase. Existing records ay hindi awtomatikong binubura.
+
+Ang records ay sine-save sa Supabase.
+Existing records ay hindi awtomatikong binubura.
+
 </div>
+
 
 <div class="cards">
 
+
 <div class="card">
+
 <h3>Total Plates</h3>
-<div class="number" id="totalPlates">0</div>
+
+<div class="number" id="totalPlates">
+0
 </div>
 
+</div>
+
+
 <div class="card">
+
 <h3>Available</h3>
-<div class="number" id="availableCount">0</div>
+
+<div class="number" id="availableCount">
+0
 </div>
 
+</div>
+
+
 <div class="card">
+
 <h3>Received</h3>
-<div class="number" id="receivedCount">0</div>
+
+<div class="number" id="receivedCount">
+0
 </div>
 
+</div>
+
+
 <div class="card">
+
 <h3>Forwarded</h3>
-<div class="number" id="forwardedCount">0</div>
+
+<div class="number" id="forwardedCount">
+0
 </div>
 
+</div>
+
+
 <div class="card">
+
 <h3>Claimed</h3>
-<div class="number" id="claimedCount">0</div>
+
+<div class="number" id="claimedCount">
+0
 </div>
+
+</div>
+
 
 <div class="card">
+
 <h3>Branches</h3>
-<div class="number" id="branchCount">0</div>
+
+<div class="number" id="branchCount">
+0
 </div>
 
 </div>
+
+
+</div>
+
 
 <div class="panel">
 
@@ -410,18 +610,24 @@ Ang records ay sine-save sa Supabase. Existing records ay hindi awtomatikong bin
 
 <div class="form-grid">
 
-<input id="quickPlate" placeholder="Plate Number">
+<input
+id="quickPlate"
+placeholder="Plate Number">
 
-<input id="quickOwner" placeholder="Owner / Customer">
+<input
+id="quickOwner"
+placeholder="Owner / Customer">
 
 <select id="quickBranch"></select>
 
 <select id="quickStatus">
+
 <option>Available</option>
 <option>Received</option>
 <option>Forwarded</option>
 <option>Claimed</option>
 <option>Reserved</option>
+
 </select>
 
 </div>
@@ -436,19 +642,24 @@ Ang records ay sine-save sa Supabase. Existing records ay hindi awtomatikong bin
 
 </section>
 
+
 <!-- ALL PLATES -->
+
 <section id="plates" class="page">
 
 <h2>All Plate List</h2>
 
 <div class="panel">
 
-<input class="search"
+<input
+class="search"
 id="plateSearch"
 placeholder="🔎 Search plate, owner, branch..."
 oninput="renderPlates()">
 
-<button class="primary" onclick="openAddModal()">
+<button
+class="primary"
+onclick="openAddModal()">
 ➕ Add New Plate
 </button>
 
@@ -459,7 +670,9 @@ oninput="renderPlates()">
 <table>
 
 <thead>
+
 <tr>
+
 <th>ID</th>
 <th>Plate</th>
 <th>Owner</th>
@@ -467,7 +680,9 @@ oninput="renderPlates()">
 <th>Status</th>
 <th>Date</th>
 <th>Action</th>
+
 </tr>
+
 </thead>
 
 <tbody id="plateTable"></tbody>
@@ -480,7 +695,9 @@ oninput="renderPlates()">
 
 </section>
 
+
 <!-- CLAIMED -->
+
 <section id="claimed" class="page">
 
 <h2>Claimed Plates</h2>
@@ -492,12 +709,16 @@ oninput="renderPlates()">
 <table>
 
 <thead>
+
 <tr>
+
 <th>Plate</th>
 <th>Owner</th>
 <th>Branch</th>
 <th>Date</th>
+
 </tr>
+
 </thead>
 
 <tbody id="claimedTable"></tbody>
@@ -510,7 +731,9 @@ oninput="renderPlates()">
 
 </section>
 
+
 <!-- AVAILABLE -->
+
 <section id="available" class="page">
 
 <h2>Available Plates</h2>
@@ -522,12 +745,16 @@ oninput="renderPlates()">
 <table>
 
 <thead>
+
 <tr>
+
 <th>Plate</th>
 <th>Branch</th>
 <th>Status</th>
 <th>Action</th>
+
 </tr>
+
 </thead>
 
 <tbody id="availableTable"></tbody>
@@ -540,7 +767,9 @@ oninput="renderPlates()">
 
 </section>
 
+
 <!-- RECEIVED -->
+
 <section id="receivedCustomer" class="page">
 
 <h2 class="received-title">
@@ -550,11 +779,15 @@ oninput="renderPlates()">
 <div class="panel">
 
 <div class="notice">
+
 <b>Received Plates:</b>
+
 Ito ang mga plates na na-receive na.
+
 </div>
 
-<input class="search"
+<input
+class="search"
 id="receivedSearch"
 placeholder="🔎 Search plate, customer, branch..."
 oninput="renderReceivedCustomer()">
@@ -564,13 +797,17 @@ oninput="renderReceivedCustomer()">
 <table>
 
 <thead>
+
 <tr>
+
 <th>Plate</th>
 <th>Customer / Owner</th>
 <th>Branch</th>
 <th>Date</th>
 <th>Status</th>
+
 </tr>
+
 </thead>
 
 <tbody id="receivedCustomerTable"></tbody>
@@ -583,7 +820,9 @@ oninput="renderReceivedCustomer()">
 
 </section>
 
+
 <!-- FORWARDED -->
+
 <section id="forwarded" class="page">
 
 <h2 class="forwarded-title">
@@ -593,11 +832,15 @@ oninput="renderReceivedCustomer()">
 <div class="panel">
 
 <div class="notice">
+
 <b>Forwarded Plates:</b>
+
 Ito ang mga plates na na-forward na sa ibang branch/customer.
+
 </div>
 
-<input class="search"
+<input
+class="search"
 id="forwardedSearch"
 placeholder="🔎 Search plate, customer, branch..."
 oninput="renderForwarded()">
@@ -607,13 +850,17 @@ oninput="renderForwarded()">
 <table>
 
 <thead>
+
 <tr>
+
 <th>Plate</th>
 <th>Customer / Owner</th>
 <th>Branch</th>
 <th>Date</th>
 <th>Status</th>
+
 </tr>
+
 </thead>
 
 <tbody id="forwardedTable"></tbody>
@@ -626,17 +873,22 @@ oninput="renderForwarded()">
 
 </section>
 
+
 <!-- BRANCHES -->
+
 <section id="branches" class="page">
 
 <h2>Other Branch</h2>
 
 <div class="panel">
 
-<input id="branchName"
+<input
+id="branchName"
 placeholder="New branch name">
 
-<button class="primary" onclick="addBranch()">
+<button
+class="primary"
+onclick="addBranch()">
 ➕ Add Branch
 </button>
 
@@ -648,7 +900,9 @@ placeholder="New branch name">
 
 </section>
 
+
 <!-- IMPORT -->
+
 <section id="import" class="page">
 
 <h2>Import / Export</h2>
@@ -662,9 +916,14 @@ Format:
 <code>plate,owner,branch,status,date</code>
 </p>
 
-<input type="file" id="csvFile" accept=".csv">
+<input
+type="file"
+id="csvFile"
+accept=".csv">
 
-<button class="primary" onclick="importCSV()">
+<button
+class="primary"
+onclick="importCSV()">
 📥 Import CSV
 </button>
 
@@ -672,17 +931,23 @@ Format:
 
 <h3>Export</h3>
 
-<button class="success" onclick="exportCSV()">
+<button
+class="success"
+onclick="exportCSV()">
 📤 Export All Plates CSV
 </button>
 
 <br><br>
 
-<button class="secondary" onclick="generateDemo()">
+<button
+class="secondary"
+onclick="generateDemo()">
 ⚡ Generate Demo Plates
 </button>
 
-<button class="danger" onclick="clearAll()">
+<button
+class="danger"
+onclick="clearAll()">
 🗑 Delete All Data
 </button>
 
@@ -691,81 +956,125 @@ Format:
 </section>
 
 </main>
+
 </div>
 
+
 <!-- ADD PLATE MODAL -->
+
 <div class="modal" id="addModal">
 
 <div class="modal-box">
 
 <h2>Add Plate</h2>
 
-<input id="plateNumber" placeholder="Plate Number">
+<input
+id="plateNumber"
+placeholder="Plate Number">
 
-<input id="owner" placeholder="Owner / Customer">
+<input
+id="owner"
+placeholder="Owner / Customer">
 
 <select id="branch"></select>
 
 <select id="status">
+
 <option>Available</option>
 <option>Received</option>
 <option>Forwarded</option>
 <option>Claimed</option>
 <option>Reserved</option>
+
 </select>
 
 <br><br>
 
-<button class="primary" onclick="savePlate()">
+<button
+class="primary"
+onclick="savePlate()">
 Save Plate
 </button>
 
-<button class="secondary" onclick="closeModal()">
+<button
+class="secondary"
+onclick="closeModal()">
 Cancel
 </button>
 
 </div>
+
 </div>
 
+
 <!-- EDIT PLATE MODAL -->
+
 <div class="modal" id="editModal">
 
 <div class="modal-box">
 
-<h2 class="edit-title">✏️ Edit Plate Record</h2>
+<h2 class="edit-title">
+✏️ Edit Plate Record
+</h2>
 
-<input type="hidden" id="editId">
+<input
+type="hidden"
+id="editId">
 
-<label><b>Plate Number</b></label>
-<input id="editPlate" placeholder="Plate Number">
+<label>
+<b>Plate Number</b>
+</label>
 
-<label><b>Owner / Customer</b></label>
-<input id="editOwner" placeholder="Owner / Customer">
+<input
+id="editPlate"
+placeholder="Plate Number">
 
-<label><b>Branch</b></label>
+<label>
+<b>Owner / Customer</b>
+</label>
+
+<input
+id="editOwner"
+placeholder="Owner / Customer">
+
+<label>
+<b>Branch</b>
+</label>
+
 <select id="editBranch"></select>
 
-<label><b>Status</b></label>
+<label>
+<b>Status</b>
+</label>
+
 <select id="editStatus">
+
 <option>Available</option>
 <option>Received</option>
 <option>Forwarded</option>
 <option>Claimed</option>
 <option>Reserved</option>
+
 </select>
 
 <br>
 
-<button class="primary" onclick="saveEdit()">
+<button
+class="primary"
+onclick="saveEdit()">
 💾 Save Changes
 </button>
 
-<button class="secondary" onclick="closeEditModal()">
+<button
+class="secondary"
+onclick="closeEditModal()">
 Cancel
 </button>
 
 </div>
+
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -774,40 +1083,60 @@ Cancel
 const LOGIN_USERNAME="RUSIBALINGASAG";
 const LOGIN_PASSWORD="RUSIBAL2019";
 
+
 /* LOGIN */
 
 function login(){
 
-const username=document.getElementById("loginUsername").value;
-const password=document.getElementById("loginPassword").value;
+const username=
+document.getElementById("loginUsername").value;
 
-if(username===LOGIN_USERNAME && password===LOGIN_PASSWORD){
+const password=
+document.getElementById("loginPassword").value;
+
+if(
+username===LOGIN_USERNAME &&
+password===LOGIN_PASSWORD
+){
 
 document.getElementById("loginScreen").style.display="none";
 
-sessionStorage.setItem("rusiLoggedIn","yes");
+sessionStorage.setItem(
+"rusiLoggedIn",
+"yes"
+);
 
 }else{
 
-document.getElementById("loginError").style.display="block";
+document.getElementById("loginError")
+.style.display="block";
 
 }
 
 }
+
 
 window.addEventListener("load",function(){
 
-if(sessionStorage.getItem("rusiLoggedIn")==="yes"){
-document.getElementById("loginScreen").style.display="none";
+if(
+sessionStorage.getItem("rusiLoggedIn")==="yes"
+){
+
+document.getElementById("loginScreen")
+.style.display="none";
+
 }
 
 });
 
+
 /* SUPABASE */
 
-const SUPABASE_URL="https://lfcbawmlhyngbytnmetm.supabase.co";
+const SUPABASE_URL=
+"https://lfcbawmlhyngbytnmetm.supabase.co";
 
-const SUPABASE_KEY="sb_publishable_KolO_-pCM806HZbKufuTHg_hxC5F7Vl";
+const SUPABASE_KEY=
+"sb_publishable_KolO_-pCM806HZbKufuTHg_hxC5F7Vl";
 
 const onlineReady=
 !SUPABASE_URL.includes("PASTE_") &&
@@ -815,15 +1144,21 @@ const onlineReady=
 
 const db=
 onlineReady
-?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY)
+?window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+)
 :null;
 
+
 let plates=[];
+
 
 let branches=[
 "Main Branch",
 "Other Branch"
 ];
+
 
 /* ESCAPE */
 
@@ -838,18 +1173,23 @@ return String(v??"")
 
 }
 
+
 /* PAGE */
 
 function showPage(page,button){
 
 document.querySelectorAll(".page")
-.forEach(p=>p.classList.remove("active"));
+.forEach(p=>
+p.classList.remove("active")
+);
 
 document.getElementById(page)
 .classList.add("active");
 
 document.querySelectorAll(".sidebar button")
-.forEach(b=>b.classList.remove("active"));
+.forEach(b=>
+b.classList.remove("active")
+);
 
 button.classList.add("active");
 
@@ -857,66 +1197,108 @@ renderAll();
 
 }
 
+
 /* DASHBOARD */
 
 function updateDashboard(){
 
-document.getElementById("totalPlates").innerText=plates.length;
+document.getElementById("totalPlates")
+.innerText=plates.length;
 
-document.getElementById("availableCount").innerText=
-plates.filter(p=>p.status==="Available").length;
+document.getElementById("availableCount")
+.innerText=
+plates.filter(
+p=>p.status==="Available"
+).length;
 
-document.getElementById("receivedCount").innerText=
-plates.filter(p=>p.status==="Received").length;
+document.getElementById("receivedCount")
+.innerText=
+plates.filter(
+p=>p.status==="Received"
+).length;
 
-document.getElementById("forwardedCount").innerText=
-plates.filter(p=>p.status==="Forwarded").length;
+document.getElementById("forwardedCount")
+.innerText=
+plates.filter(
+p=>p.status==="Forwarded"
+).length;
 
-document.getElementById("claimedCount").innerText=
-plates.filter(p=>p.status==="Claimed").length;
+document.getElementById("claimedCount")
+.innerText=
+plates.filter(
+p=>p.status==="Claimed"
+).length;
 
-document.getElementById("branchCount").innerText=branches.length;
+document.getElementById("branchCount")
+.innerText=branches.length;
 
 }
+
 
 /* ADD MODAL */
 
 function openAddModal(){
-document.getElementById("addModal").classList.add("show");
+
+document.getElementById("addModal")
+.classList.add("show");
+
 }
 
+
 function closeModal(){
-document.getElementById("addModal").classList.remove("show");
+
+document.getElementById("addModal")
+.classList.remove("show");
+
 }
+
 
 /* EDIT MODAL */
 
 function openEditModal(id){
 
-const p=plates.find(x=>String(x.id)===String(id));
+const p=
+plates.find(
+x=>String(x.id)===String(id)
+);
 
 if(!p){
+
 alert("Hindi makita ang plate record.");
+
 return;
+
 }
 
 document.getElementById("editId").value=p.id;
-document.getElementById("editPlate").value=p.plate||"";
-document.getElementById("editOwner").value=p.owner||"";
-document.getElementById("editStatus").value=p.status||"Available";
+
+document.getElementById("editPlate").value=
+p.plate||"";
+
+document.getElementById("editOwner").value=
+p.owner||"";
+
+document.getElementById("editStatus").value=
+p.status||"Available";
+
 
 const options=
 branches.map(b=>
 `<option value="${esc(b)}">${esc(b)}</option>`
 ).join("");
 
-document.getElementById("editBranch").innerHTML=options;
 
-document.getElementById("editBranch").value=p.branch||"";
+document.getElementById("editBranch")
+.innerHTML=options;
 
-document.getElementById("editModal").classList.add("show");
+document.getElementById("editBranch")
+.value=p.branch||"";
+
+document.getElementById("editModal")
+.classList.add("show");
 
 }
+
 
 function closeEditModal(){
 
@@ -924,6 +1306,7 @@ document.getElementById("editModal")
 .classList.remove("show");
 
 }
+
 
 /* SAVE EDIT */
 
@@ -947,11 +1330,18 @@ document.getElementById("editBranch").value;
 const status=
 document.getElementById("editStatus").value;
 
+
 if(!plate)
-return alert("Ilagay ang plate number.");
+return alert(
+"Ilagay ang plate number."
+);
+
 
 if(!onlineReady)
-return alert("I-connect muna ang Supabase.");
+return alert(
+"I-connect muna ang Supabase."
+);
+
 
 const duplicate=
 plates.some(p=>
@@ -959,8 +1349,12 @@ String(p.id)!==String(id) &&
 String(p.plate||"").toUpperCase()===plate
 );
 
+
 if(duplicate)
-return alert("May existing na ibang record na may ganitong plate number.");
+return alert(
+"May existing na ibang record na may ganitong plate number."
+);
+
 
 const {error}=
 await db
@@ -973,20 +1367,28 @@ status
 })
 .eq("id",id);
 
+
 if(error){
 
-alert("Hindi na-update: "+error.message);
+alert(
+"Hindi na-update: "+error.message
+);
+
 return;
 
 }
+
 
 closeEditModal();
 
 await loadData();
 
-alert("Plate record updated successfully!");
+alert(
+"Plate record updated successfully!"
+);
 
 }
+
 
 /* LOAD ALL RECORDS */
 
@@ -994,11 +1396,14 @@ async function loadData(){
 
 if(!onlineReady){
 
-alert("Hindi pa naka-connect ang database.");
+alert(
+"Hindi pa naka-connect ang database."
+);
 
 return;
 
 }
+
 
 let allPlates=[];
 
@@ -1006,23 +1411,30 @@ const batchSize=1000;
 
 let from=0;
 
+
 while(true){
 
 const {data:p,error:pe}=
-
 await db
 .from("plates")
 .select("*")
 .order("id",{ascending:true})
-.range(from,from+batchSize-1);
+.range(
+from,
+from+batchSize-1
+);
+
 
 if(pe){
 
-alert("Database error: "+pe.message);
+alert(
+"Database error: "+pe.message
+);
 
 return;
 
 }
+
 
 if(!p || p.length===0){
 
@@ -1030,7 +1442,9 @@ break;
 
 }
 
+
 allPlates=allPlates.concat(p);
+
 
 if(p.length<batchSize){
 
@@ -1038,35 +1452,43 @@ break;
 
 }
 
+
 from+=batchSize;
 
 }
 
-const {data:b,error:be}=
 
+const {data:b,error:be}=
 await db
 .from("branches")
 .select("*")
 .order("id",{ascending:true});
 
+
 if(be){
 
-alert("Branch database error: "+be.message);
+alert(
+"Branch database error: "+be.message
+);
 
 return;
 
 }
 
+
 plates=allPlates;
+
 
 branches=
 (b&&b.length)
 ?b.map(x=>x.name)
 :["Main Branch","Other Branch"];
 
+
 renderAll();
 
 }
+
 
 /* SAVE PLATE */
 
@@ -1087,14 +1509,28 @@ document.getElementById("branch").value;
 const status=
 document.getElementById("status").value;
 
+
 if(!plate)
-return alert("Ilagay ang plate number.");
+return alert(
+"Ilagay ang plate number."
+);
+
 
 if(!onlineReady)
-return alert("I-connect muna ang Supabase.");
+return alert(
+"I-connect muna ang Supabase."
+);
 
-if(plates.some(p=>p.plate===plate))
-return alert("Existing na ang plate number.");
+
+if(
+plates.some(
+p=>p.plate===plate
+)
+)
+return alert(
+"Existing na ang plate number."
+);
+
 
 const row={
 plate,
@@ -1104,22 +1540,36 @@ status,
 date:new Date().toLocaleString()
 };
 
+
 const {error}=
-await db.from("plates").insert(row);
+await db
+.from("plates")
+.insert(row);
+
 
 if(error)
-return alert("Hindi na-save: "+error.message);
+return alert(
+"Hindi na-save: "+error.message
+);
 
-document.getElementById("plateNumber").value="";
-document.getElementById("owner").value="";
+
+document.getElementById("plateNumber")
+.value="";
+
+document.getElementById("owner")
+.value="";
+
 
 closeModal();
 
 await loadData();
 
-alert("Plate saved online!");
+alert(
+"Plate saved online!"
+);
 
 }
+
 
 /* QUICK ADD */
 
@@ -1127,29 +1577,48 @@ async function addQuickPlate(){
 
 const plate=
 document.getElementById("quickPlate")
-.value.trim().toUpperCase();
+.value.trim()
+.toUpperCase();
 
 const owner=
 document.getElementById("quickOwner")
 .value.trim();
 
 const branch=
-document.getElementById("quickBranch").value;
+document.getElementById("quickBranch")
+.value;
 
 const status=
-document.getElementById("quickStatus").value;
+document.getElementById("quickStatus")
+.value;
+
 
 if(!plate)
-return alert("Ilagay ang plate number.");
+return alert(
+"Ilagay ang plate number."
+);
+
 
 if(!onlineReady)
-return alert("I-connect muna ang Supabase.");
+return alert(
+"I-connect muna ang Supabase."
+);
 
-if(plates.some(p=>p.plate===plate))
-return alert("Existing na ang plate number.");
+
+if(
+plates.some(
+p=>p.plate===plate
+)
+)
+return alert(
+"Existing na ang plate number."
+);
+
 
 const {error}=
-await db.from("plates").insert({
+await db
+.from("plates")
+.insert({
 
 plate,
 owner,
@@ -1159,27 +1628,43 @@ date:new Date().toLocaleString()
 
 });
 
-if(error)
-return alert("Hindi na-save: "+error.message);
 
-document.getElementById("quickPlate").value="";
-document.getElementById("quickOwner").value="";
+if(error)
+return alert(
+"Hindi na-save: "+error.message
+);
+
+
+document.getElementById("quickPlate")
+.value="";
+
+document.getElementById("quickOwner")
+.value="";
+
 
 await loadData();
 
-alert("Plate added online!");
+alert(
+"Plate added online!"
+);
 
 }
+
 
 /* STATUS */
 
 async function changeStatus(id){
 
-const p=plates.find(x=>x.id===id);
+const p=
+plates.find(
+x=>x.id===id
+);
 
 if(!p)return;
 
+
 let next;
+
 
 if(p.status==="Available"){
 
@@ -1203,25 +1688,36 @@ next="Available";
 
 }
 
+
 const {error}=
 await db
 .from("plates")
-.update({status:next})
+.update({
+status:next
+})
 .eq("id",id);
 
+
 if(error)
-return alert(error.message);
+return alert(
+error.message
+);
+
 
 await loadData();
 
 }
 
+
 /* DELETE */
 
 async function deletePlate(id){
 
-if(!confirm("Delete this plate?"))
+if(!confirm(
+"Delete this plate?"
+))
 return;
+
 
 const {error}=
 await db
@@ -1229,51 +1725,77 @@ await db
 .delete()
 .eq("id",id);
 
+
 if(error)
-return alert(error.message);
+return alert(
+error.message
+);
+
 
 await loadData();
 
 }
+
 
 /* ALL PLATES */
 
 function renderPlates(){
 
 const s=
-(document.getElementById("plateSearch")?.value||"")
-.toLowerCase();
+(
+document.getElementById("plateSearch")
+?.value||""
+).toLowerCase();
+
 
 const data=
 plates.filter(p=>
 
-(p.plate||"").toLowerCase().includes(s) ||
+(p.plate||"")
+.toLowerCase()
+.includes(s) ||
 
-(p.owner||"").toLowerCase().includes(s) ||
+(p.owner||"")
+.toLowerCase()
+.includes(s) ||
 
-(p.branch||"").toLowerCase().includes(s)
+(p.branch||"")
+.toLowerCase()
+.includes(s)
 
 );
 
-document.getElementById("plateTable").innerHTML=
+
+document.getElementById("plateTable")
+.innerHTML=
 
 data.map(p=>`
 
 <tr>
 
-<td>${esc(p.id)}</td>
-
 <td>
-<strong>${esc(p.plate)}</strong>
+${esc(p.id)}
 </td>
 
-<td>${esc(p.owner)}</td>
+<td>
+<strong>
+${esc(p.plate)}
+</strong>
+</td>
 
-<td>${esc(p.branch)}</td>
+<td>
+${esc(p.owner)}
+</td>
+
+<td>
+${esc(p.branch)}
+</td>
 
 <td>
 
-<span class="status ${String(p.status||"").toLowerCase()}">
+<span class="status ${String(
+p.status||""
+).toLowerCase()}">
 
 ${esc(p.status)}
 
@@ -1281,25 +1803,30 @@ ${esc(p.status)}
 
 </td>
 
-<td>${esc(p.date)}</td>
+<td>
+${esc(p.date)}
+</td>
 
 <td>
 
-<button class="edit"
+<button
+class="edit"
 onclick="openEditModal(${p.id})">
 
 ✏️ Edit
 
 </button>
 
-<button class="success"
+<button
+class="success"
 onclick="changeStatus(${p.id})">
 
 Next Status
 
 </button>
 
-<button class="danger"
+<button
+class="danger"
 onclick="deletePlate(${p.id})">
 
 Delete
@@ -1314,25 +1841,37 @@ Delete
 
 }
 
+
 /* CLAIMED */
 
 function renderClaimed(){
 
-document.getElementById("claimedTable").innerHTML=
+document.getElementById("claimedTable")
+.innerHTML=
 
 plates
-.filter(p=>p.status==="Claimed")
+.filter(
+p=>p.status==="Claimed"
+)
 .map(p=>`
 
 <tr>
 
-<td>${esc(p.plate)}</td>
+<td>
+${esc(p.plate)}
+</td>
 
-<td>${esc(p.owner)}</td>
+<td>
+${esc(p.owner)}
+</td>
 
-<td>${esc(p.branch)}</td>
+<td>
+${esc(p.branch)}
+</td>
 
-<td>${esc(p.date)}</td>
+<td>
+${esc(p.date)}
+</td>
 
 </tr>
 
@@ -1340,21 +1879,29 @@ plates
 
 }
 
+
 /* AVAILABLE */
 
 function renderAvailable(){
 
-document.getElementById("availableTable").innerHTML=
+document.getElementById("availableTable")
+.innerHTML=
 
 plates
-.filter(p=>p.status==="Available")
+.filter(
+p=>p.status==="Available"
+)
 .map(p=>`
 
 <tr>
 
-<td>${esc(p.plate)}</td>
+<td>
+${esc(p.plate)}
+</td>
 
-<td>${esc(p.branch)}</td>
+<td>
+${esc(p.branch)}
+</td>
 
 <td>
 
@@ -1366,14 +1913,16 @@ Available
 
 <td>
 
-<button class="success"
+<button
+class="success"
 onclick="changeStatus(${p.id})">
 
 Receive
 
 </button>
 
-<button class="edit"
+<button
+class="edit"
 onclick="openEditModal(${p.id})">
 
 ✏️ Edit
@@ -1388,13 +1937,17 @@ onclick="openEditModal(${p.id})">
 
 }
 
+
 /* RECEIVED */
 
 function renderReceivedCustomer(){
 
 const s=
-(document.getElementById("receivedSearch")?.value||"")
-.toLowerCase();
+(
+document.getElementById("receivedSearch")
+?.value||""
+).toLowerCase();
+
 
 const data=
 plates.filter(p=>
@@ -1403,18 +1956,28 @@ p.status==="Received" &&
 
 (
 
-(p.plate||"").toLowerCase().includes(s) ||
+(p.plate||"")
+.toLowerCase()
+.includes(s) ||
 
-(p.owner||"").toLowerCase().includes(s) ||
+(p.owner||"")
+.toLowerCase()
+.includes(s) ||
 
-(p.branch||"").toLowerCase().includes(s)
+(p.branch||"")
+.toLowerCase()
+.includes(s)
 
 )
 
 );
 
+
 const table=
-document.getElementById("receivedCustomerTable");
+document.getElementById(
+"receivedCustomerTable"
+);
+
 
 if(!data.length){
 
@@ -1422,7 +1985,8 @@ table.innerHTML=`
 
 <tr>
 
-<td colspan="5"
+<td
+colspan="5"
 style="text-align:center;color:#64748b;padding:30px">
 
 No received plates found.
@@ -1437,6 +2001,7 @@ return;
 
 }
 
+
 table.innerHTML=
 
 data.map(p=>`
@@ -1444,14 +2009,22 @@ data.map(p=>`
 <tr>
 
 <td>
-<strong>${esc(p.plate)}</strong>
+<strong>
+${esc(p.plate)}
+</strong>
 </td>
 
-<td>${esc(p.owner)}</td>
+<td>
+${esc(p.owner)}
+</td>
 
-<td>${esc(p.branch)}</td>
+<td>
+${esc(p.branch)}
+</td>
 
-<td>${esc(p.date)}</td>
+<td>
+${esc(p.date)}
+</td>
 
 <td>
 
@@ -1461,7 +2034,8 @@ Received
 
 <br><br>
 
-<button class="edit"
+<button
+class="edit"
 onclick="openEditModal(${p.id})">
 
 ✏️ Edit
@@ -1476,13 +2050,17 @@ onclick="openEditModal(${p.id})">
 
 }
 
+
 /* FORWARDED */
 
 function renderForwarded(){
 
 const s=
-(document.getElementById("forwardedSearch")?.value||"")
-.toLowerCase();
+(
+document.getElementById("forwardedSearch")
+?.value||""
+).toLowerCase();
+
 
 const data=
 plates.filter(p=>
@@ -1491,18 +2069,28 @@ p.status==="Forwarded" &&
 
 (
 
-(p.plate||"").toLowerCase().includes(s) ||
+(p.plate||"")
+.toLowerCase()
+.includes(s) ||
 
-(p.owner||"").toLowerCase().includes(s) ||
+(p.owner||"")
+.toLowerCase()
+.includes(s) ||
 
-(p.branch||"").toLowerCase().includes(s)
+(p.branch||"")
+.toLowerCase()
+.includes(s)
 
 )
 
 );
 
+
 const table=
-document.getElementById("forwardedTable");
+document.getElementById(
+"forwardedTable"
+);
+
 
 if(!data.length){
 
@@ -1510,7 +2098,8 @@ table.innerHTML=`
 
 <tr>
 
-<td colspan="5"
+<td
+colspan="5"
 style="text-align:center;color:#64748b;padding:30px">
 
 No forwarded plates found.
@@ -1525,6 +2114,7 @@ return;
 
 }
 
+
 table.innerHTML=
 
 data.map(p=>`
@@ -1532,14 +2122,24 @@ data.map(p=>`
 <tr>
 
 <td>
-<strong>${esc(p.plate)}</strong>
+
+<strong>
+${esc(p.plate)}
+</strong>
+
 </td>
 
-<td>${esc(p.owner)}</td>
+<td>
+${esc(p.owner)}
+</td>
 
-<td>${esc(p.branch)}</td>
+<td>
+${esc(p.branch)}
+</td>
 
-<td>${esc(p.date)}</td>
+<td>
+${esc(p.date)}
+</td>
 
 <td>
 
@@ -1549,7 +2149,8 @@ Forwarded
 
 <br><br>
 
-<button class="edit"
+<button
+class="edit"
 onclick="openEditModal(${p.id})">
 
 ✏️ Edit
@@ -1564,6 +2165,7 @@ onclick="openEditModal(${p.id})">
 
 }
 
+
 /* BRANCH */
 
 async function addBranch(){
@@ -1572,37 +2174,61 @@ const name=
 document.getElementById("branchName")
 .value.trim();
 
+
 if(!name)return;
 
+
 if(!onlineReady)
-return alert("I-connect muna ang Supabase.");
+return alert(
+"I-connect muna ang Supabase."
+);
+
 
 if(branches.includes(name))
-return alert("Existing na ang branch.");
+return alert(
+"Existing na ang branch."
+);
+
 
 const {error}=
 await db
 .from("branches")
-.insert({name});
+.insert({
+name
+});
+
 
 if(error)
-return alert(error.message);
+return alert(
+error.message
+);
 
-document.getElementById("branchName").value="";
+
+document.getElementById("branchName")
+.value="";
+
 
 await loadData();
 
 }
 
+
 async function deleteBranch(id){
 
 if(branches.length<=1)
-return alert("Kailangan may at least isang branch.");
+return alert(
+"Kailangan may at least isang branch."
+);
 
-if(!confirm("Delete branch?"))
+
+if(!confirm(
+"Delete branch?"
+))
 return;
 
+
 const b=branches[id];
+
 
 const row=
 await db
@@ -1610,6 +2236,7 @@ await db
 .select("id")
 .eq("name",b)
 .maybeSingle();
+
 
 if(row.data){
 
@@ -1619,22 +2246,29 @@ await db
 .delete()
 .eq("id",row.data.id);
 
+
 if(error)
-return alert(error.message);
+return alert(
+error.message
+);
 
 }
+
 
 await loadData();
 
 }
 
+
 function renderBranches(){
 
-document.getElementById("branchList").innerHTML=
+document.getElementById("branchList")
+.innerHTML=
 
 branches.map((b,i)=>`
 
-<div class="card"
+<div
+class="card"
 style="display:inline-block;margin:5px">
 
 🏢 ${esc(b)}
@@ -1642,12 +2276,21 @@ style="display:inline-block;margin:5px">
 <br><br>
 
 <strong>
-${plates.filter(p=>p.branch===b).length} plates
+
+${
+plates.filter(
+p=>p.branch===b
+).length
+}
+
+plates
+
 </strong>
 
 <br><br>
 
-<button class="danger"
+<button
+class="danger"
 onclick="deleteBranch(${i})">
 
 Delete
@@ -1660,6 +2303,7 @@ Delete
 
 }
 
+
 /* EXPORT */
 
 function exportCSV(){
@@ -1667,33 +2311,54 @@ function exportCSV(){
 let csv=
 "plate,owner,branch,status,date\n";
 
+
 plates.forEach(p=>{
 
 csv+=
-`"${String(p.plate||"").replace(/"/g,'""')}","${String(p.owner||"").replace(/"/g,'""')}","${String(p.branch||"").replace(/"/g,'""')}","${String(p.status||"").replace(/"/g,'""')}","${String(p.date||"").replace(/"/g,'""')}"\n`;
+
+`"${String(p.plate||"")
+.replace(/"/g,'""')}","${String(p.owner||"")
+.replace(/"/g,'""')}","${String(p.branch||"")
+.replace(/"/g,'""')}","${String(p.status||"")
+.replace(/"/g,'""')}","${String(p.date||"")
+.replace(/"/g,'""')}"\n`;
 
 });
 
-const a=document.createElement("a");
+
+const a=
+document.createElement("a");
+
 
 a.href=
 URL.createObjectURL(
-new Blob([csv],{type:"text/csv"})
+new Blob(
+[csv],
+{
+type:"text/csv"
+}
+)
 );
 
-a.download="plate-list.csv";
+
+a.download=
+"plate-list.csv";
 
 a.click();
 
 }
+
 
 /* CSV PARSER */
 
 function parseCSVLine(line){
 
 let r=[];
+
 let c="";
+
 let q=false;
+
 
 for(let x of line){
 
@@ -1701,9 +2366,12 @@ if(x==='"'){
 
 q=!q;
 
-}else if(x===","&&!q){
+}else if(
+x===","&&!q
+){
 
 r.push(c);
+
 c="";
 
 }else{
@@ -1714,11 +2382,13 @@ c+=x;
 
 }
 
+
 r.push(c);
 
 return r;
 
 }
+
 
 /* IMPORT CSV */
 
@@ -1727,30 +2397,46 @@ async function importCSV(){
 const input=
 document.getElementById("csvFile");
 
+
 if(!input.files.length)
-return alert("Pumili ng CSV file.");
+return alert(
+"Pumili ng CSV file."
+);
+
 
 if(!onlineReady)
-return alert("I-connect muna ang Supabase.");
+return alert(
+"I-connect muna ang Supabase."
+);
+
 
 const lines=
 (await input.files[0].text())
 .split(/\r?\n/)
 .filter(x=>x.trim());
 
+
 let added=0;
 
-for(let i=1;i<lines.length;i++){
+
+for(
+let i=1;
+i<lines.length;
+i++
+){
 
 const row=
 parseCSVLine(lines[i]);
 
+
 if(!row[0])continue;
+
 
 const plate=
 row[0]
 .trim()
 .toUpperCase();
+
 
 const existing=
 await db
@@ -1759,8 +2445,10 @@ await db
 .eq("plate",plate)
 .maybeSingle();
 
+
 if(existing.data)
 continue;
+
 
 const {error}=
 await db
@@ -1769,23 +2457,30 @@ await db
 
 plate,
 
-owner:row[1]||"",
+owner:
+row[1]||"",
 
-branch:row[2]||"Main Branch",
+branch:
+row[2]||"Main Branch",
 
-status:row[3]||"Available",
+status:
+row[3]||"Available",
 
 date:
-row[4]||new Date().toLocaleString()
+row[4]||
+new Date().toLocaleString()
 
 });
+
 
 if(!error)
 added++;
 
 }
 
+
 await loadData();
+
 
 alert(
 added+
@@ -1794,30 +2489,46 @@ added+
 
 }
 
+
 /* DEMO */
 
 async function generateDemo(){
 
-if(!confirm("Generate 100 demo plate records?"))
+if(!confirm(
+"Generate 100 demo plate records?"
+))
 return;
 
+
 if(!onlineReady)
-return alert("I-connect muna ang Supabase.");
+return alert(
+"I-connect muna ang Supabase."
+);
+
 
 const rows=[];
 
-for(let i=1;i<=100;i++){
+
+for(
+let i=1;
+i<=100;
+i++
+){
 
 rows.push({
 
 plate:
-"DEMO-"+String(i).padStart(6,"0"),
+"DEMO-"+
+String(i)
+.padStart(6,"0"),
 
 owner:
 "Demo Customer "+i,
 
 branch:
-branches[i%branches.length],
+branches[
+i%branches.length
+],
 
 status:
 i%5===0
@@ -1831,24 +2542,34 @@ new Date().toLocaleString()
 
 }
 
+
 const {error}=
 await db
 .from("plates")
-.upsert(rows,{
-
+.upsert(
+rows,
+{
 onConflict:"plate",
 ignoreDuplicates:true
+}
+);
 
-});
 
 if(error)
-return alert(error.message);
+return alert(
+error.message
+);
+
 
 await loadData();
 
-alert("Demo plates generated.");
+
+alert(
+"Demo plates generated."
+);
 
 }
+
 
 /* CLEAR */
 
@@ -1859,21 +2580,34 @@ if(!confirm(
 ))
 return;
 
+
 if(!onlineReady)
-return alert("I-connect muna ang Supabase.");
+return alert(
+"I-connect muna ang Supabase."
+);
+
 
 const {error}=
 await db
 .from("plates")
 .delete()
-.not("id","is",null);
+.not(
+"id",
+"is",
+null
+);
+
 
 if(error)
-return alert(error.message);
+return alert(
+error.message
+);
+
 
 await loadData();
 
 }
+
 
 /* RENDER ALL */
 
@@ -1897,6 +2631,7 @@ renderBranchDropdowns();
 
 }
 
+
 /* DROPDOWNS */
 
 function renderBranchDropdowns(){
@@ -1910,26 +2645,35 @@ ${esc(b)}
 
 ).join("");
 
-document.getElementById("branch").innerHTML=
-options;
 
-document.getElementById("quickBranch").innerHTML=
-options;
+document.getElementById("branch")
+.innerHTML=options;
+
+
+document.getElementById("quickBranch")
+.innerHTML=options;
 
 }
+
 
 /* CLOCK */
 
 function updateClock(){
 
-document.getElementById("clock").innerText=
+document.getElementById("clock")
+.innerText=
 new Date().toLocaleString();
 
 }
 
-setInterval(updateClock,1000);
+
+setInterval(
+updateClock,
+1000
+);
 
 updateClock();
+
 
 /* START */
 
