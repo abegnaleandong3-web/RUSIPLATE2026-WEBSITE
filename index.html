@@ -28,7 +28,8 @@ button.success{background:#16a34a;color:white;border:0;padding:8px 12px;border-r
 button.danger{background:#dc2626;color:white;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
 button.secondary{background:#475569;color:white;border:0;padding:10px 15px;border-radius:7px;cursor:pointer}
 button.forward{background:#7c3aed;color:white;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
-table{width:100%;border-collapse:collapse;min-width:950px}
+button.edit{background:#f59e0b;color:white;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
+table{width:100%;border-collapse:collapse;min-width:1050px}
 th,td{padding:11px;border-bottom:1px solid #e2e8f0;text-align:left}
 th{background:#f8fafc}
 .table-wrap{overflow:auto}
@@ -46,6 +47,7 @@ th{background:#f8fafc}
 .notice{background:#fef3c7;padding:12px;border-radius:8px;margin-bottom:15px}
 .received-title{color:#1d4ed8}
 .forwarded-title{color:#6d28d9}
+.edit-title{color:#d97706}
 
 @media(max-width:700px){
 .sidebar{width:65px}
@@ -459,7 +461,7 @@ placeholder="New branch name">
 
 <p>
 Format:
-<code>plate,owner,branch,status</code>
+<code>plate,owner,branch,status,date</code>
 </p>
 
 <input type="file" id="csvFile" accept=".csv">
@@ -522,6 +524,47 @@ Save Plate
 </button>
 
 <button class="secondary" onclick="closeModal()">
+Cancel
+</button>
+
+</div>
+</div>
+
+
+<!-- EDIT PLATE MODAL -->
+<div class="modal" id="editModal">
+
+<div class="modal-box">
+
+<h2 class="edit-title">✏️ Edit Plate Record</h2>
+
+<input type="hidden" id="editId">
+
+<label><b>Plate Number</b></label>
+<input id="editPlate" placeholder="Plate Number">
+
+<label><b>Owner / Customer</b></label>
+<input id="editOwner" placeholder="Owner / Customer">
+
+<label><b>Branch</b></label>
+<select id="editBranch"></select>
+
+<label><b>Status</b></label>
+<select id="editStatus">
+<option>Available</option>
+<option>Received</option>
+<option>Forwarded</option>
+<option>Claimed</option>
+<option>Reserved</option>
+</select>
+
+<br>
+
+<button class="primary" onclick="saveEdit()">
+💾 Save Changes
+</button>
+
+<button class="secondary" onclick="closeEditModal()">
 Cancel
 </button>
 
@@ -649,7 +692,7 @@ document.getElementById("branchCount").innerText=branches.length;
 }
 
 
-/* MODAL */
+/* ADD MODAL */
 
 function openAddModal(){
 document.getElementById("addModal").classList.add("show");
@@ -660,17 +703,131 @@ document.getElementById("addModal").classList.remove("show");
 }
 
 
+/* EDIT MODAL */
+
+function openEditModal(id){
+
+const p=plates.find(x=>String(x.id)===String(id));
+
+if(!p){
+alert("Hindi makita ang plate record.");
+return;
+}
+
+document.getElementById("editId").value=p.id;
+document.getElementById("editPlate").value=p.plate||"";
+document.getElementById("editOwner").value=p.owner||"";
+document.getElementById("editStatus").value=p.status||"Available";
+
+const options=
+branches.map(b=>
+`<option value="${esc(b)}">${esc(b)}</option>`
+).join("");
+
+document.getElementById("editBranch").innerHTML=options;
+
+document.getElementById("editBranch").value=p.branch||"";
+
+document.getElementById("editModal").classList.add("show");
+
+}
+
+
+function closeEditModal(){
+
+document.getElementById("editModal")
+.classList.remove("show");
+
+}
+
+
+/* SAVE EDIT */
+
+async function saveEdit(){
+
+const id=
+document.getElementById("editId").value;
+
+const plate=
+document.getElementById("editPlate")
+.value.trim()
+.toUpperCase();
+
+const owner=
+document.getElementById("editOwner")
+.value.trim();
+
+const branch=
+document.getElementById("editBranch").value;
+
+const status=
+document.getElementById("editStatus").value;
+
+
+if(!plate)
+return alert("Ilagay ang plate number.");
+
+if(!onlineReady)
+return alert("I-connect muna ang Supabase.");
+
+
+/* CHECK DUPLICATE PLATE */
+
+const duplicate=
+plates.some(p=>
+String(p.id)!==String(id) &&
+String(p.plate||"").toUpperCase()===plate
+);
+
+if(duplicate)
+return alert("May existing na ibang record na may ganitong plate number.");
+
+
+/* UPDATE DATABASE */
+
+const {error}=
+await db
+.from("plates")
+.update({
+plate,
+owner,
+branch,
+status
+})
+.eq("id",id);
+
+
+if(error){
+
+alert("Hindi na-update: "+error.message);
+return;
+
+}
+
+
+closeEditModal();
+
+await loadData();
+
+alert("Plate record updated successfully!");
+
+}
+
+
 /* =====================================================
    LOAD ALL RECORDS
-   Hindi lang unang 1,000 ang kukunin.
-   Kumukuha ito ng records by batches.
+   Hindi lang unang 1,000.
+   Kinukuha ang records by batches.
    ===================================================== */
 
 async function loadData(){
 
 if(!onlineReady){
+
 alert("Hindi pa naka-connect ang database.");
+
 return;
+
 }
 
 
@@ -826,8 +983,7 @@ async function addQuickPlate(){
 
 const plate=
 document.getElementById("quickPlate")
-.value.trim()
-.toUpperCase();
+.value.trim().toUpperCase();
 
 const owner=
 document.getElementById("quickOwner")
@@ -980,7 +1136,7 @@ data.map(p=>`
 
 <tr>
 
-<td>${p.id}</td>
+<td>${esc(p.id)}</td>
 
 <td>
 <strong>${esc(p.plate)}</strong>
@@ -992,7 +1148,7 @@ data.map(p=>`
 
 <td>
 
-<span class="status ${String(p.status).toLowerCase()}">
+<span class="status ${String(p.status||"").toLowerCase()}">
 
 ${esc(p.status)}
 
@@ -1003,6 +1159,13 @@ ${esc(p.status)}
 <td>${esc(p.date)}</td>
 
 <td>
+
+<button class="edit"
+onclick="openEditModal(${p.id})">
+
+✏️ Edit
+
+</button>
 
 <button class="success"
 onclick="changeStatus(${p.id})">
@@ -1084,6 +1247,13 @@ Available
 onclick="changeStatus(${p.id})">
 
 Receive
+
+</button>
+
+<button class="edit"
+onclick="openEditModal(${p.id})">
+
+✏️ Edit
 
 </button>
 
@@ -1171,6 +1341,15 @@ data.map(p=>`
 Received
 </span>
 
+<br><br>
+
+<button class="edit"
+onclick="openEditModal(${p.id})">
+
+✏️ Edit
+
+</button>
+
 </td>
 
 </tr>
@@ -1254,6 +1433,15 @@ data.map(p=>`
 <span class="status forwarded">
 Forwarded
 </span>
+
+<br><br>
+
+<button class="edit"
+onclick="openEditModal(${p.id})">
+
+✏️ Edit
+
+</button>
 
 </td>
 
@@ -1387,7 +1575,7 @@ let csv=
 plates.forEach(p=>{
 
 csv+=
-`"${p.plate}","${p.owner}","${p.branch}","${p.status}","${p.date}"\n`;
+`"${String(p.plate||"").replace(/"/g,'""')}","${String(p.owner||"").replace(/"/g,'""')}","${String(p.branch||"").replace(/"/g,'""')}","${String(p.status||"").replace(/"/g,'""')}","${String(p.date||"").replace(/"/g,'""')}"\n`;
 
 });
 
@@ -1469,6 +1657,12 @@ const lines=
 let added=0;
 
 
+/*
+ IMPORTANT:
+ Hindi ginagamit ang plates.some() dito bilang
+ database limit. Ang database ang chine-check.
+*/
+
 for(let i=1;i<lines.length;i++){
 
 const row=
@@ -1484,7 +1678,17 @@ row[0]
 .toUpperCase();
 
 
-if(plates.some(p=>p.plate===plate))
+/* CHECK DUPLICATE */
+
+const existing=
+await db
+.from("plates")
+.select("id")
+.eq("plate",plate)
+.maybeSingle();
+
+
+if(existing.data)
 continue;
 
 
@@ -1661,6 +1865,7 @@ options;
 
 document.getElementById("quickBranch").innerHTML=
 options;
+
 
 }
 
