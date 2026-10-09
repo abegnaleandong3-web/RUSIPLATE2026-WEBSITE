@@ -443,12 +443,8 @@ const branch=document.getElementById("editBranch").value;
 const status=document.getElementById("editStatus").value;
 const dateVal=document.getElementById("editDate").value;
 const oldRec=plates.find(p=>String(p.id)===String(id));
-const statusChanged=oldRec&&oldRec.status!==status;
 const dateTouched=dateVal&&dateVal!==toInputDate(oldRec?oldRec.date:"");
-let date;
-if((statusChanged||["Available","Received","Forwarded"].includes(status))&&!dateTouched){date=new Date().toLocaleString();}
-else if(dateVal){date=dateTouched?fromInputDate(dateVal):(oldRec&&oldRec.date?oldRec.date:fromInputDate(dateVal));}
-else{date=oldRec&&oldRec.date?oldRec.date:new Date().toLocaleString();}
+const date=dateTouched?fromInputDate(dateVal):new Date().toLocaleString();
 
 if(!plate)return alert("Ilagay ang plate number.");
 if(!onlineReady)return alert("I-connect muna ang Supabase.");
