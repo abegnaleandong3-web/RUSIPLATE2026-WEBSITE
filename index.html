@@ -387,16 +387,35 @@ return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&g
 }
 
 /* DATE HELPERS */
+function parseAnyDate(v){
+if(v instanceof Date)return v;
+let t=String(v||"").replace(/[\u202f\u00a0]/g," ").replace(/([ap])\.\s?m\./gi,"$1m").trim();
+if(!t)return null;
+let d=new Date(t);
+if(!isNaN(d))return d;
+const m=t.match(/(\d{1,2})\/(\d{1,2})\/(\d{4}),?\s*(\d{1,2}):(\d{2})(?::(\d{2}))?\s*([ap]m)?/i);
+if(m){
+let a=+m[1],b=+m[2];
+if(a>12){const x=a;a=b;b=x;}
+let h=+m[4];
+const ap=(m[7]||"").toLowerCase();
+if(ap==="pm"&&h<12)h+=12;
+if(ap==="am"&&h===12)h=0;
+return new Date(+m[3],a-1,b,h,+m[5],+(m[6]||0));
+}
+return null;
+}
+
 function toInputDate(v){
-const d=new Date(v);
-if(!v||isNaN(d))return "";
+const d=parseAnyDate(v);
+if(!d||isNaN(d))return "";
 const pad=n=>String(n).padStart(2,"0");
 return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 function fmtDate(v){
-const d=new Date(v);
-if(!v||isNaN(d))return v||"";
-return d.toLocaleString("en-US",{month:"long",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit",hour12:true});
+const d=parseAnyDate(v);
+if(!d||isNaN(d))return v||"";
+return d.toLocaleString("en-US",{month:"long",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit",hour12:true}).replace(/[\u202f\u00a0]/g," ");
 }
 function fromInputDate(v){
 return new Date(v).toLocaleString();
