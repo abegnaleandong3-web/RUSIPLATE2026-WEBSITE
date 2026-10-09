@@ -6,6 +6,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>RUSI Plate Management System</title>
+<meta name="description" content="RUSI Plate Management System - plate records, received, forwarded, available and claimed plates.">
+<meta name="keywords" content="RUSI Plate Management, RUSI Plate, plate management system, RUSI Balingasag">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://abegnaleandong3-web.github.io/RUSIPLATE2026-WEBSITE/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RUSI Plate Management System">
+<meta property="og:description" content="RUSI Plate Management System - plate records and status tracking.">
+<meta property="og:url" content="https://abegnaleandong3-web.github.io/RUSIPLATE2026-WEBSITE/">
+<!-- Google Search Console verification: paste your meta tag here -->
 <style>
 :root{--navy:#080e1c;--navy2:#0f1a30;--gold:#f5b301;--gold2:#ffd24d;--blue:#3b6cf6;--line:#e8ecf3;--muted:#6b7a90;--text:#0f172a}
 *{box-sizing:border-box}
@@ -384,6 +393,11 @@ if(!v||isNaN(d))return "";
 const pad=n=>String(n).padStart(2,"0");
 return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
+function fmtDate(v){
+const d=new Date(v);
+if(!v||isNaN(d))return v||"";
+return d.toLocaleString("en-US",{month:"long",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit",hour12:true});
+}
 function fromInputDate(v){
 return new Date(v).toLocaleString();
 }
@@ -563,7 +577,7 @@ document.getElementById("plateTable").innerHTML=data.map(p=>`
 <td>${esc(p.owner)}</td>
 <td>${esc(p.branch)}</td>
 <td><span class="status ${String(p.status||"").toLowerCase()}">${esc(p.status)}</span></td>
-<td>${esc(p.date)}</td>
+<td>${esc(fmtDate(p.date))}</td>
 <td>
 <button class="edit" onclick="openEditModal(${p.id})">✏️ Edit</button>
 <button class="success" onclick="changeStatus(${p.id})">Next Status</button>
@@ -579,7 +593,7 @@ document.getElementById("claimedTable").innerHTML=plates.filter(p=>p.status==="C
 <td>${esc(p.plate)}</td>
 <td>${esc(p.owner)}</td>
 <td>${esc(p.branch)}</td>
-<td>${esc(p.date)}</td>
+<td>${esc(fmtDate(p.date))}</td>
 </tr>`).join("");
 }
 
@@ -615,7 +629,7 @@ table.innerHTML=data.map(p=>`
 <td><strong>${esc(p.plate)}</strong></td>
 <td>${esc(p.owner)}</td>
 <td>${esc(p.branch)}</td>
-<td>${esc(p.date)}</td>
+<td>${esc(fmtDate(p.date))}</td>
 <td>
 <span class="status received">Received</span>
 <br><br>
@@ -642,7 +656,7 @@ table.innerHTML=data.map(p=>`
 <td><strong>${esc(p.plate)}</strong></td>
 <td>${esc(p.owner)}</td>
 <td>${esc(p.branch)}</td>
-<td>${esc(p.date)}</td>
+<td>${esc(fmtDate(p.date))}</td>
 <td>
 <span class="status forwarded">Forwarded</span>
 <br><br>
@@ -786,7 +800,7 @@ document.getElementById("quickBranch").innerHTML=options;
 }
 
 /* CLOCK */
-function updateClock(){document.getElementById("clock").innerText=new Date().toLocaleString();}
+function updateClock(){document.getElementById("clock").innerText=fmtDate(new Date());}
 setInterval(updateClock,1000);
 updateClock();
 
