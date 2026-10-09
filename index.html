@@ -330,7 +330,7 @@ main{padding:16px}main h2{font-size:21px}.hero{padding:18px}.hero h2{font-size:2
 <label><b>Branch</b></label>
 <select id="editBranch"></select>
 <label><b>Status</b></label>
-<select id="editStatus">
+<select id="editStatus" onchange="document.getElementById('editDate').value=toInputDate(new Date())">
 <option>Available</option><option>Received</option><option>Forwarded</option><option>Claimed</option><option>Reserved</option>
 </select>
 <label><b>Date & Time</b></label>
@@ -443,7 +443,12 @@ const branch=document.getElementById("editBranch").value;
 const status=document.getElementById("editStatus").value;
 const dateVal=document.getElementById("editDate").value;
 const oldRec=plates.find(p=>String(p.id)===String(id));
-const date=dateVal?fromInputDate(dateVal):(oldRec&&oldRec.date?oldRec.date:new Date().toLocaleString());
+const statusChanged=oldRec&&oldRec.status!==status;
+const dateTouched=dateVal&&dateVal!==toInputDate(oldRec?oldRec.date:"");
+let date;
+if((statusChanged||["Available","Received","Forwarded"].includes(status))&&!dateTouched){date=new Date().toLocaleString();}
+else if(dateVal){date=dateTouched?fromInputDate(dateVal):(oldRec&&oldRec.date?oldRec.date:fromInputDate(dateVal));}
+else{date=oldRec&&oldRec.date?oldRec.date:new Date().toLocaleString();}
 
 if(!plate)return alert("Ilagay ang plate number.");
 if(!onlineReady)return alert("I-connect muna ang Supabase.");
@@ -534,7 +539,7 @@ else if(p.status==="Received")next="Forwarded";
 else if(p.status==="Forwarded")next="Claimed";
 else if(p.status==="Claimed")next="Reserved";
 else next="Available";
-const {error}=await db.from("plates").update({status:next}).eq("id",id);
+const {error}=await db.from("plates").update({status:next,date:new Date().toLocaleString()}).eq("id",id);
 if(error)return alert(error.message);
 await loadData();
 }
