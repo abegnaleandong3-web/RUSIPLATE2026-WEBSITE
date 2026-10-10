@@ -3,82 +3,90 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RUSI Plate Status Check</title>
-<meta name="description" content="Check the status of your motorcycle plate with RUSI Plate Management.">
+<title>RUSI BALINGASAG PLATE</title>
+<meta name="description" content="Check the status of your motorcycle plate at RUSI Balingasag Branch.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#16213a;--paper:#f3f5f8;--card:#fff;--plate:#f2c94c;--line:#d8dee8;--ok:#1b7f4b;--wait:#a86a00;--err:#b3261e}
+:root{--red:#c8102e;--red-d:#9f0c24;--ink:#1c1e23;--mute:#5e6572;--line:#dcdfe5;--bg:#eef0f3;--card:#fff;--plate:#f6cf3d;--ok:#157347;--wait:#9a5b00}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:32px 16px}
-header{text-align:center;max-width:520px;margin-bottom:24px}
-h1{font-size:1.7rem;margin:0 0 8px;letter-spacing:-.01em}
-header p{margin:0;color:#4a5670;line-height:1.5}
-main{width:100%;max-width:480px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
-label{display:block;font-weight:600;font-size:.9rem;margin:0 0 6px}
-.plate{background:var(--plate);border:3px solid var(--ink);border-radius:10px;padding:4px}
-.plate input{width:100%;border:0;background:transparent;text-align:center;font:700 1.9rem/1.3 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);padding:8px}
+body{font-family:Barlow,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:linear-gradient(rgba(16,19,26,.62),rgba(16,19,26,.62)),url("background.webp") center/cover fixed no-repeat,#1c1e23;color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+.top{background:rgba(28,30,35,.88);border-bottom:5px solid var(--red);padding:34px 20px 30px}
+.top .in{max-width:560px;margin:0 auto}
+h1{font-family:"Barlow Condensed",Impact,"Arial Narrow",sans-serif;font-weight:700;font-size:clamp(2.1rem,7vw,3rem);line-height:1;letter-spacing:.04em;text-transform:uppercase;color:#fff;margin:0 0 10px}
+.top p{margin:0;color:#c3c7d0;font-size:1.02rem;line-height:1.5}
+main{width:100%;max-width:560px;margin:-18px auto 0;padding:0 16px 28px;flex:1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:24px;box-shadow:0 6px 22px rgba(20,24,34,.10)}
+label{display:block;font-weight:600;margin:0 0 7px}
+.field{margin-bottom:18px}
+.plate{background:var(--plate);border:3px solid var(--ink);border-radius:8px;padding:3px;box-shadow:inset 0 0 0 2px #fff6}
+.plate input{width:100%;border:0;background:transparent;text-align:center;font:700 2.1rem/1.25 "Barlow Condensed",Impact,"Arial Narrow",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);padding:6px}
+.plate input::placeholder{color:#1c1e2355}
 .plate input:focus{outline:none}
-.plate:focus-within{box-shadow:0 0 0 3px #16213a55}
-.code{width:100%;border:1px solid var(--line);border-radius:8px;padding:12px;font-size:1.05rem;text-align:center}
-.code:focus{outline:2px solid var(--ink);outline-offset:1px}
-.field{margin-bottom:16px}
-small{display:block;color:#5d6882;margin-top:6px}
-button{width:100%;background:var(--ink);color:#fff;border:0;border-radius:8px;padding:14px;font-size:1rem;font-weight:600;cursor:pointer}
-button:hover{background:#0e1730}
-button:focus-visible{outline:3px solid var(--plate);outline-offset:2px}
-button:disabled{opacity:.6;cursor:wait}
-#result{margin-top:20px}
-.res{border-radius:10px;padding:16px;border:1px solid var(--line);background:var(--paper)}
-.res h2{margin:0 0 4px;font-size:1.3rem;font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em}
-.badge{display:inline-block;padding:4px 10px;border-radius:99px;font-weight:600;font-size:.9rem;color:#fff;margin:6px 0 10px}
+.plate:focus-within,.name:focus{outline:3px solid #c8102e55;outline-offset:2px}
+.name{width:100%;border:1.5px solid #b9bec8;border-radius:6px;padding:13px 14px;font:inherit;font-size:1.08rem;color:var(--ink);background:#fff}
+.name:focus{border-color:var(--red)}
+small{display:block;color:var(--mute);margin-top:7px;font-size:.88rem;line-height:1.4}
+.or{display:flex;align-items:center;gap:12px;color:var(--mute);font-size:.9rem;margin:2px 0 18px}
+.or:before,.or:after{content:"";flex:1;border-top:1px solid var(--line)}
+button{width:100%;background:var(--red);color:#fff;border:0;border-radius:6px;padding:15px;font:600 1.08rem Barlow,Arial,sans-serif;letter-spacing:.02em;cursor:pointer;transition:background .15s}
+button:hover{background:var(--red-d)}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+button:disabled{opacity:.65;cursor:wait}
+#result{margin-top:22px}
+.res{display:flex;justify-content:space-between;align-items:center;gap:14px;border:1px solid var(--line);border-left:5px solid var(--red);border-radius:6px;padding:15px 16px;margin-top:10px;background:#fafbfc}
+.res .pl{font:700 1.6rem/1 "Barlow Condensed",Impact,sans-serif;letter-spacing:.1em}
+.res .br{color:var(--mute);font-size:.92rem;margin-top:6px}
+.badge{white-space:nowrap;padding:6px 12px;border-radius:99px;font-weight:600;font-size:.9rem;color:#fff}
 .badge.ok{background:var(--ok)}.badge.wait{background:var(--wait)}
-dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:.95rem}
-dt{color:#5d6882}dd{margin:0;font-weight:600}
-.err{color:var(--err);border-color:#e7b9b5;background:#fdf1f0}
-footer{margin-top:20px;color:#5d6882;font-size:.85rem;text-align:center;max-width:480px;line-height:1.5}
+.msg{border:1px solid #e9bcb7;background:#fdf2f1;color:#9c1c12;border-radius:6px;padding:14px 16px;line-height:1.45}
+footer{text-align:center;color:#d5d9e0;font-size:.88rem;line-height:1.55;padding:6px 20px 30px;max-width:560px;margin:0 auto}
+@media(max-width:420px){.res{flex-direction:column;align-items:flex-start}.card{padding:18px}}
 </style>
 </head>
 <body>
-<header>
-  <h1>Check your plate status</h1>
-  <p>Search by plate number, by name, or both.</p>
-</header>
+<div class="top"><div class="in">
+  <h1>RUSI BALINGASAG PLATE</h1>
+  <p>Check the status of your motorcycle plate. Search by plate number, by name, or both.</p>
+</div></div>
 
 <main>
-  <form id="f" autocomplete="off">
-    <div class="field">
-      <label for="plate">Plate number</label>
-      <div class="plate"><input id="plate" maxlength="10" placeholder="ABC 1234"></div>
-    </div>
-    <div class="field">
-      <label for="code">Name</label>
-      <input class="code" id="code" maxlength="60" placeholder="Juan Dela Cruz">
-      <small>Fill in at least one. For name, type at least 4 letters (last name or full name).</small>
-    </div>
-    <button id="go" type="submit">Check status</button>
-  </form>
-  <div id="result" aria-live="polite"></div>
+  <div class="card">
+    <form id="f" autocomplete="off">
+      <div class="field">
+        <label for="plate">Plate number</label>
+        <div class="plate"><input id="plate" maxlength="10" placeholder="ABC 1234"></div>
+      </div>
+      <div class="or">or</div>
+      <div class="field">
+        <label for="code">Name</label>
+        <input class="name" id="code" maxlength="60" placeholder="Juan Dela Cruz">
+        <small>Type at least 4 letters. Your last name or full name works.</small>
+      </div>
+      <button id="go" type="submit">Check status</button>
+    </form>
+    <div id="result" aria-live="polite"></div>
+  </div>
 </main>
 
-<footer>Wrong result or no record found? Contact the RUSI branch where you bought your motorcycle.</footer>
+<footer>RUSI Balingasag Branch<br>Wrong result or no record found? Please visit or contact the branch.</footer>
 
 <script>
-// ====== EDIT THESE TWO (same values as your index.html) ======
 const SUPABASE_URL = "https://lfcbawmlhyngbytnmetm.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_KolO_-pCM806HZbKufuTHg_hxC5F7Vl";
-// =============================================================
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const fmt = d => d ? new Date(d).toLocaleDateString("en-PH",{year:"numeric",month:"long",day:"numeric"}) : "—";
 
 $("f").addEventListener("submit", async e => {
   e.preventDefault();
   const btn = $("go"), out = $("result");
   const plateV = $("plate").value.trim(), nameV = $("code").value.trim();
   const letters = nameV.replace(/[^A-Za-z]/g, "").length;
-  if (!plateV && !nameV) { out.innerHTML = '<div class="res err">Type a plate number or a name.</div>'; return; }
-  if (!plateV && letters < 4) { out.innerHTML = '<div class="res err">Type at least 4 letters of the name.</div>'; return; }
+  if (!plateV && !nameV) { out.innerHTML = '<div class="msg">Type a plate number or a name.</div>'; return; }
+  if (!plateV && letters < 4) { out.innerHTML = '<div class="msg">Type at least 4 letters of the name.</div>'; return; }
   btn.disabled = true; btn.textContent = "Checking…"; out.innerHTML = "";
   try {
     const r = await fetch(SUPABASE_URL + "/rest/v1/rpc/lookup_plate", {
@@ -89,17 +97,16 @@ $("f").addEventListener("submit", async e => {
     if (!r.ok) throw new Error("server");
     const rows = await r.json();
     if (!rows.length) {
-      out.innerHTML = '<div class="res err">No record found. Check the spelling, then try again.</div>';
+      out.innerHTML = '<div class="msg">No record found. Check the spelling, then try again.</div>';
     } else {
       out.innerHTML = rows.map(p => {
         const done = /releas|ready|claimed|done/i.test(p.status || "");
-        return '<div class="res" style="margin-bottom:10px"><h2>' + esc(p.plate) + '</h2>' +
-          '<span class="badge ' + (done ? "ok" : "wait") + '">' + esc(p.status || "Processing") + '</span>' +
-          '<dl><dt>Branch</dt><dd>' + esc(p.branch) + '</dd></dl></div>';
+        return '<div class="res"><div><div class="pl">' + esc(p.plate) + '</div><div class="br">' + esc(p.branch) + '</div></div>' +
+          '<span class="badge ' + (done ? "ok" : "wait") + '">' + esc(p.status || "Processing") + '</span></div>';
       }).join("");
     }
   } catch (err) {
-    out.innerHTML = '<div class="res err">We could not check right now. Check your internet connection and try again.</div>';
+    out.innerHTML = '<div class="msg">We could not check right now. Check your internet connection and try again.</div>';
   }
   btn.disabled = false; btn.textContent = "Check status";
 });
